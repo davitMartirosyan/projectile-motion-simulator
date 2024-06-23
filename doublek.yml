@@ -1,0 +1,97 @@
+CLI_NAME = cli
+SRV_NAME = srv
+
+CC = gcc -std=c99
+CFLAGS = -Ilib  -Imlx #-g -fsanitize=address -Wall -Wextra -Werror
+
+LIB = $(wildcard lib/*.h)
+CLI_SRC = $(wildcard src/client/*.c)
+SRV_SRC = $(wildcard src/server/*.c)
+
+CLI_OBJ = $(CLI_SRC:.c=.o)
+SRV_OBJ = $(SRV_SRC:.c=.o)
+
+all: $(MINILIBX) $(CLI_NAME) $(SRV_NAME)
+
+$(MINILIBX)
+	ifeq ($(shell uname -s), Darwin)
+		$(CC) $(OBJS) $(LDFLAGS_macOS) -o $@
+	else
+		$(CC) $(OBJS) $(LDFLAGS_linux) -o $@
+	endif
+
+$(CLI_NAME) : $(CLI_OBJ)
+	$(CC) $(CFLAGS) $(CLI_OBJ) -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(CLI_NAME)
+
+$(SRV_NAME) : $(SRV_OBJ)
+	$(CC) $(CFLAGS) $(SRV_OBJ) -o $(SRV_NAME)
+
+$(CLI_OBJ) : $(CLI_SRC)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(SRV_OBJ) : $(SRV_SRC)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	@rm -rf $(CLI_OBJ)
+	@rm -rf $(SRV_OBJ)
+
+fclean: clean
+	@rm -rf $(CLI_NAME)
+	@rm -rf $(SRV_NAME)
+
+re: fclean all
+
+.PHONNY: re all fclean clean
+
+
+
+	void	*mlx;
+	void	*mlx_win;
+	t_data	img;
+
+	mlx = mlx_init();
+	mlx_win = mlx_new_window(mlx, 500, 500, "Hello world!");
+	img.img = mlx_new_image(mlx, 500, 500);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
+								&img.endian);
+    for(int i = 0; i < 20; i++)
+    {
+	    my_mlx_pixel_put(&img, i, i, 0x00FF0000);
+    }
+	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+	mlx_loop(mlx);
+
+
+
+	typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
+
+
+
+    double velo = 25;
+    double angle = 45;
+    double v0x = get_vx(velo, angle);
+    double v0y = get_vy(velo, angle);
+    
+    double g = 9.81;
+    double t = 0.1;
+    
+    double totalTime = time_flight(v0y, g);
+    double N = get_N_interval(totalTime, t);
+
+    printf("%f\n", N);
