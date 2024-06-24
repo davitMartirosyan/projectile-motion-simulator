@@ -95,3 +95,10 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
     double N = get_N_interval(totalTime, t);
 
     printf("%f\n", N);
+
+
+		double vx = calc_vx(25, 45);
+    double vy = calc_vy(25, 45);
+    double total_time = T_flight(vy, 9.81);
+    double peak = T_peak(total_time);
+    double interval = N_interval(total_time, 0.1);

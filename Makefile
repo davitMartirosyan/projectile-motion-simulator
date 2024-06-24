@@ -10,6 +10,7 @@ SRV_SRC = $(wildcard src/server/*.c)
 CLI_OBJ = $(CLI_SRC:.c=.o)
 SRV_OBJ = $(SRV_SRC:.c=.o)
 
+
 ifeq ($(UNAME_S), Darwin)
     LDFLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit -lreadline
     INSTALL_DEPENDENCIES =
@@ -20,7 +21,11 @@ else
         sudo apt-get install -y libx11-dev libxext-dev libreadline-dev
 endif
 
-all: $(CLI_NAME) $(SRV_NAME)
+
+all: libft_build $(CLI_NAME) $(SRV_NAME)
+
+libft_build :
+	$(MAKE) -C libft
 
 $(CLI_NAME): $(CLI_OBJ)
 	$(CC) $(CLI_OBJ) $(CFLAGS) $(LDFLAGS) -o $(CLI_NAME) -lm
@@ -32,10 +37,12 @@ $(SRV_NAME): $(SRV_OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(CLI_OBJ) $(SRV_OBJ)
+	rm -rf $(CLI_OBJ) $(SRV_OBJ)
+	$(MAKE) -C libft clean
 
-fclean: clean
-	rm -f $(CLI_NAME) $(SRV_NAME)
+fclean: clean 
+	rm -rf $(CLI_NAME) $(SRV_NAME)
+	$(MAKE) -C libft fclean
 
 re: fclean all
 

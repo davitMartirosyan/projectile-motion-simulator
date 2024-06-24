@@ -1,29 +1,57 @@
 #include "header.h"
 #include "physlib.h"
 
-void xy_data(double v0x, double v0y, double t, double g, int n, double dataArray[2])
+double calc_vx(double v0, double angle)
 {
-    t = n * t;
-    dataArray[0] = v0x * t;
-    dataArray[1] = v0y * t - (0.5 * g * (t*t));  
+    return (v0 * cos((angle * M_PI) / 180));
 }
 
-double get_vx(double v, double angle)
+double calc_vy(double v0, double angle)
 {
-    return (v * cos(angle * M_PI / 180));
+    return (v0 * sin((angle * M_PI) / 180));
 }
 
-double get_vy(double v, double angle)
-{
-    return (v * sin(angle * M_PI / 180));
-}
-
-double time_flight(double v0y, double g)
+double T_flight(double v0y, double g)
 {
     return ((2 * v0y) / g);
 }
 
-double get_N_interval(double time_flight, double t)
+double T_peak(double total_time)
 {
-    return (time_flight/t);
+    return (total_time / 2);
+}
+
+double H_max(double v0y, double g)
+{
+    return ((v0y * v0y) / (2 * g));
+}
+
+double R_range(double v0x, double total_time)
+{
+    return (v0x * total_time);
+}
+
+int N_interval(double total_time, double delta_time)
+{
+    return (round(total_time / delta_time));
+}
+
+double T_time(int n, double delta_time)
+{
+    return (n * delta_time);
+}
+
+double get_xt(double v0x, double t)
+{
+    return (v0x * t);
+}
+
+double get_yt(double v0y, double t, double g)
+{
+    return ((v0y * t) - (0.5 * g) * (t * t));
+}
+
+double get_vyt(double v0y, double g, double t)
+{
+    return (v0y - (g * t));
 }

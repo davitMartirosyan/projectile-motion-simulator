@@ -1,7 +1,9 @@
 #ifndef HEADER_H
 #define HEADER_H
+#define _POSIX_C_SOURCE 199309L
 #include <stdio.h>
 #include <unistd.h>
+#include <time.h>
 #include <fcntl.h>
 #include <sys/socket.h>
 #include <sys/types.h>

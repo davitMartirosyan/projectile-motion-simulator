@@ -1,10 +1,8 @@
 {
     "files.associations": {
         "*.bem": "cuda-cpp",
-        "netdb.h": "c",
-        "math.h": "c",
-        "unistd.h": "c",
-        "types.h": "c",
-        "header.h": "c"
+        "clockid_t.h": "c",
+        "typesizes.h": "c",
+        "unistd.h": "c"
     }
 }

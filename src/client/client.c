@@ -41,7 +41,6 @@ int	main(int ac, char **av)
     char *HTTP_request = 
         "%s %s HTTP/1.1\r\n"
         "Host: %s\r\n"
-        "Accept: "
         "Content-Length: %d\r\n"
         "Connection: keep-alive\r\n\r\n"
         "\r\n"
