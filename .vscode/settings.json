@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "*.bem": "cuda-cpp",
-        "clockid_t.h": "c",
-        "typesizes.h": "c",
-        "unistd.h": "c"
-    }
-}
