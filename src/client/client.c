@@ -25,7 +25,7 @@ int	main(int ac, char **av)
     memset(&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = INADDR_ANY;
-    addr.sin_port = htons(8080);
+    addr.sin_port = htons(2020);
     int con = connect(s, (const struct sockaddr*)&addr, sizeof(addr));
     if (con < 0)
     {
@@ -42,9 +42,10 @@ int	main(int ac, char **av)
         "%s %s HTTP/1.1\r\n"
         "Host: %s\r\n"
         "Content-Length: %d\r\n"
-        "Connection: keep-alive\r\n\r\n"
+        "Connection: keep-alive\r\n"
         "\r\n"
-        "{v0=%f,angle=%f}";
+        "{v0=%f,angle=%f}\n";
+
 
     sprintf(buf, HTTP_request, 
         av[1], req_buf,

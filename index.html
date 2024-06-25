@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="http://127.0.0.1:2020/" method="GET" id="form">
+        <input type="text" name="velo">
+        <input type="text" name="angle">
+        <input type="submit" name="send">
+    </form>
+
+
+<script>
+    document.getElementById('form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const velo = document.querySelector('input[name="velo"]').value;
+        const angle = document.querySelector('input[name="angle"]').value;
+        // const formData = new FormData(form);
+        const uri = `http://127.0.0.1:2020/?velo=${encodeURIComponent(velo)}&angle=${encodeURIComponent(angle)}`
+
+        fetch('http://127.0.0.1:2020/', {
+            method: 'GET',
+            // body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+</body>
+</html>
