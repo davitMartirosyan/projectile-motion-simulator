@@ -20,5 +20,7 @@ typedef struct headers_t
 }headers_t;
 
 headers_t *get_headers(char *r);
+service_t *create_server(int family, uint32_t ipv, uint16_t port);
+headers_t *get_headers(char *r);
 
 #endif

@@ -12,10 +12,10 @@
 #include <errno.h>
 #include <math.h>
 #include <stdlib.h>
-#include <mlx.h>
 #include <readline/readline.h>
 #include <string.h>
 #include "libft.h"
+// #include <mlx.h>
 // #include <cjson/cJSON.h>
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -23,11 +23,11 @@
 
 typedef struct service_t
 {
-    char request[4096];
     int opt;
     int socket;
     int bind;
     int listen;
+    char request[4096];
     struct sockaddr_in server;
     struct sockaddr_in client;
     struct sockaddr old_type_address;
