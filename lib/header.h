@@ -25,7 +25,10 @@ typedef struct service_t
 {
     int opt;
     int socket;
-    int bind;
+    union{
+        int bind;
+        int connect;
+    };
     int listen;
     char request[4096];
     struct sockaddr_in server;
