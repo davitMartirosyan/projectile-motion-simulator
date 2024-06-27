@@ -2,7 +2,7 @@ CLI_NAME = cli
 SRV_NAME = srv
 
 CC = gcc
-CFLAGS = -std=c99 -Ilib  -Ilibft  -framework OpenGL #-g -fsanitize=address -Wall -Wextra -Werror
+CFLAGS = -std=c99 -Ilib  -Ilibft  #-framework OpenGL #-g -fsanitize=address -Wall -Wextra -Werror
 
 CLI_SRC = $(wildcard src/client/*.c)
 SRV_SRC = $(wildcard src/server/*.c)

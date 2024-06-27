@@ -30,18 +30,22 @@ int main(int ac, char **av)
         exit(1);
     }
 
-    service_t *server = create_server(AF_INET, INADDR_ANY, 2020);
+    service_t *server = create_server(AF_INET, 2020, INADDR_ANY);
+    // fcntl(server->socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
     while (1)
     {
         socklen_t len = sizeof(server->client);
         int client = accept(server->socket, (struct sockaddr*)&server->client, &len);
-        if (client < 0)
-            continue;
-        else
-        {
-            int rt = read(client, server->request, sizeof(server->request));
+            int rt = recv(client, server->request, sizeof(server->request) - 1, 0);
+            if (rt < 0) {
+                perror("Receive failed");
+                break;
+            } else if (rt == 0) {
+                printf("Client disconnected\n");
+                break;
+            }
             server->request[rt] = '\0';
             printf("%s\n", server->request);
-        }
+            memset(server->request, 0, sizeof(server->request));
     }
 }

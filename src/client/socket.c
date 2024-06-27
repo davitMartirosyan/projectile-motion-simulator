@@ -7,9 +7,10 @@ service_t *create_client(int family, uint16_t port, char* ipv)
     if (!service)
         return (NULL);
     memset(service, 0, sizeof(service_t));
-    if (inet_aton(service->ipv, &service->ip) == 0)
+    strcpy(service->ipv, ipv);
+    if (inet_pton(family, service->ipv, (struct in_addr*)&service->ip) != 1)
     {
-        perror("Inet-aton");
+        fprintf(stderr, "Invalid Ip address format\n");
         free(service);
         return (NULL);
     }
@@ -21,8 +22,8 @@ service_t *create_client(int family, uint16_t port, char* ipv)
         return (NULL);
     }
     service->client.sin_family = family;
-    service->client.sin_port = htons(port);
-    service->client.sin_addr.s_addr = htonl(INADDR_ANY);
+    service->client.sin_port = htons(2020);
+    service->client.sin_addr.s_addr = INADDR_ANY;
     service->connect = connect(service->socket, (const struct sockaddr*)&service->client, sizeof(service->client));
     if (service->connect < 0)
     {
