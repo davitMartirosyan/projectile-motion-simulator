@@ -1,6 +1,7 @@
 #ifndef HEADER_H
 #define HEADER_H
 #define _POSIX_C_SOURCE 199309L
+#define _DARWIN_C_SOURCE
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
@@ -8,6 +9,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <errno.h>
 #include <math.h>
@@ -34,6 +36,8 @@ typedef struct service_t
     struct sockaddr_in server;
     struct sockaddr_in client;
     struct sockaddr old_type_address;
+    char ipv[255];
+    struct in_addr ip;
 } service_t;
 
 typedef struct bomb_t

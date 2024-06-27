@@ -2,7 +2,7 @@ CLI_NAME = cli
 SRV_NAME = srv
 
 CC = gcc
-CFLAGS = -std=c99 -Ilib  -Ilibft  #-g -fsanitize=address -Wall -Wextra -Werror
+CFLAGS = -std=c99 -Ilib  -Ilibft  -framework OpenGL #-g -fsanitize=address -Wall -Wextra -Werror
 
 CLI_SRC = $(wildcard src/client/*.c)
 SRV_SRC = $(wildcard src/server/*.c)
@@ -17,10 +17,10 @@ libft_build :
 	$(MAKE) -C libft
 
 $(CLI_NAME): $(CLI_OBJ)
-	$(CC) $(CLI_OBJ) $(CFLAGS) $(LDFLAGS) -o $(CLI_NAME) -lm libft/libft.a
+	$(CC) $(CLI_OBJ) $(CFLAGS) $(LDFLAGS) -o $(CLI_NAME) -lm libft/libft.a -lreadline
 
 $(SRV_NAME): $(SRV_OBJ)
-	$(CC) $(SRV_OBJ) $(CFLAGS) -o $(SRV_NAME) -lm libft/libft.a
+	$(CC) $(SRV_OBJ) $(CFLAGS) -o $(SRV_NAME) -lm libft/libft.a -lreadline
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

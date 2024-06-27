@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <math.h>
+# include <string.h>
 # include "get_next_line.h"
 typedef struct s_list
 {
@@ -39,6 +40,8 @@ void	*ft_memchr(const void *s, int c, size_t n);
 void	*ft_memmove(void *dest, const void *src, size_t n);
 void	*ft_memset(void *s, int c, int n);
 
+char	*append(char *s1, char *s2);
+char	*ft_append(char *s1, char *s2);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(const char *s);
