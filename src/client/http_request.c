@@ -23,15 +23,22 @@ int send_packet(service_t *cli, bomb_t *bomb, char * method)
         return (0);
     sprintf(cli->request, request, method, !*path ? "/phys" : path, cli->ipv);
     ssize_t sd = send(cli->socket, cli->request, ft_strlen(cli->request), 0);
-    printf("%s", cli->request);
-    // close(cli->socket);
+    printf("send: %ld\n", sd);
+    if (sd < 0)
+    {
+        perror("send");
+        return (0);
+    }
+    // printf("%s", cli->request);
     return (1);
 }
 
-int recv_packet(service_t *cli, bomb_t *bomb)
-{
+int recv_packet(service_t *cli, bomb_t *bomb) {
     ssize_t rp = recv(cli->socket, cli->response, sizeof(cli->response), 0);
-    close(cli->socket);
-    printf("hasa\n");
-    return (0);
+    printf("recv: %ld\n", rp);
+    if (rp < 0) {
+        perror("recv");
+        return 0;
+    }
+    return 1;
 }

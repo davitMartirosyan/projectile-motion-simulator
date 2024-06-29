@@ -28,68 +28,47 @@ int main(int ac, char **av)
     {
         fd_set rset_cp = set.rset;
         fd_set wset_cp = set.wset;
-        int plexing = select(max + 1, &rset_cp, &wset_cp, NULL, NULL);
-        if (plexing < 0)
+        int plex = select(max + 1, &rset_cp, &wset_cp, NULL, NULL);
+        if (plex <= 0)
+            continue;
+        if (FD_ISSET(server->socket, &rset_cp))
         {
-            perror("select");
-            exit(1);
+            //new connection
+            socklen_t len = sizeof(server->client);
+            int cli = accept(server->socket, (struct sockaddr*)&server->client, &len);
+            if (cli < 0)
+                continue;
+            non_block(cli);
+            FD_SET(cli, &set.rset);
+            if (cli > max)
+                max = cli;
+            printf("new connection\n");
         }
-        for(int fd = 0; fd <= max; fd++)
-        {
-            if (FD_ISSET(fd, &rset_cp))
-            {
-                if (fd == server->socket)
-                {
-                    //new connection
-                    // printf("neww\n");
-                    socklen_t len = sizeof(server->client);
-                    int cli = accept(server->socket, (const struct sockaddr*)&server->client, &len);
-                    // printf("accept\n");
-                    if (cli < 0) continue;
-                    set.clients[cli].fd = cli;
-                    max = (cli > max) ? cli : max;
-                    FD_SET(cli, &set.rset);
-                }
-                else
-                {
-                    //client handling
-                    // ssize_t rd = recv(fd, set.clients[fd].response, sizeof(set.clients[fd].response), 0);
-                    // set.clients[fd].request[rd] = '\0';
-                    // printf("%s", set.clients[fd].response);
-                    // memset(set.clients[fd].request, 0, sizeof(set.clients[fd].request));
 
-                    char buf[4096] = {0};
-                    ssize_t rd = recv(fd, buf, sizeof(buf), 0);
-                    buf[rd] = '\0';
-                    char html[4096] = 
-                        "HTTP/1.1 200 OK\r\n"
-                        "Content-Type: text/html\r\n"
-                        "\r\n"
-                        "<html>"
-                        "<body"
-                        "<h1>"
-                        "hello world"
-                        "</h1>"
-                        "</body>"
-                        "</html>";
-                    int a = send(fd, html, ft_strlen(html), 0);
-                    printf("send: %d\n", a);
+
+        for(int fd = 2; fd <= max; fd++)
+        {
+            if (FD_ISSET(fd, &rset_cp) && fd != server->socket)
+            {
+                char buf[4096];
+                ssize_t r = recv(fd, buf, sizeof(buf), 0);
+                if (r <= 0)
+                {
                     close(fd);
-                    FD_CLR(fd, &rset_cp);
+                    FD_CLR(fd, &set.rset);
+                }
+                buf[r] = '\0';
+                printf("{{{{%d}}}}\n", fd);
+                printf("%s", buf);
+                ssize_t s = send(fd, buf, ft_strlen(buf), 0);
+                if (s <= 0)
+                {
+                    close(fd);
                     FD_CLR(fd, &set.rset);
                 }
             }
         }
-
-        // for(int fd = 2; fd <= max; fd++)
-        // {
-        //     if(FD_ISSET(fd, &wset_cp))
-        //     {
-        //         char buf[1024] = {0};
-        //         ssize_t sd = send(fd, buf, sizeof(buf), 0);
-        //     }
-        // }
-    }
+    }   
 }
 
 

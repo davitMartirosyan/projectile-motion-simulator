@@ -12,12 +12,12 @@ int	main(int ac, char **av)
         .velocity = 0.0,
         .angle = 0.0
     };
-
+    service_t *client = create_client(AF_INET, ft_atoi(av[2]), av[3]);
+    if (!client)
+        exit(1);
     while (1)
     {
-        service_t *client = create_client(AF_INET, ft_atoi(av[2]), av[3]);
-        if (!client)
-            exit(1);
+
         char *method = readline("Method: ");
         char *angle = readline("Angle: ");
         char *velocity = readline("Velocity: ");
@@ -30,8 +30,9 @@ int	main(int ac, char **av)
             printf("Enter Correct Values\n");
         free(angle);
         free(velocity);
-        free(client);
     }
+    free(client);
+
 }
 
 

@@ -17,8 +17,10 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <string.h>
-#include <OpenGL/gl.h>
-#include <GLUT/glut.h>
+// #include <OpenGL/gl.h>
+// #include <GLUT/glut.h>
+#include <GL/gl.h>
+#include <GL/glut.h>
 #include "libft.h"
 // #include <mlx.h>
 // #include <cjson/cJSON.h>
