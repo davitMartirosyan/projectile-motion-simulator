@@ -28,6 +28,7 @@
 
 typedef struct service_t
 {
+    int id;
     int opt;
     int socket;
     union{

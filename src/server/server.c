@@ -2,7 +2,6 @@
 #include "physlib.h"
 #include "server.h"
 
-
 int main(int ac, char **av)
 {
     if (ac < 2)
@@ -16,53 +15,56 @@ int main(int ac, char **av)
         exit(1);
     }
     service_t *server = create_server(AF_INET, 2020, INADDR_ANY);
+    set_t set = {0};
     if (!server)
         exit(1);
-    
-    fd_set rset;
-    fd_set wset;
-    FD_ZERO(&rset);
-    FD_ZERO(&wset);
 
-    FD_SET(server->socket, &rset);
+    FD_ZERO(&set.rset);
+    FD_ZERO(&set.wset);
+    FD_SET(server->socket, &set.rset);
+
     int max = server->socket;
     while (1)
     {
-        fd_set rset_cp = rset;
-        fd_set wset_cp = wset;
+        fd_set rset_cp = set.rset;
+        fd_set wset_cp = set.wset;
         int plexing = select(max + 1, &rset_cp, &wset_cp, NULL, NULL);
         if (plexing < 0)
         {
             perror("select");
             exit(1);
         }
-        // if (FD_ISSET(server->socket, &rset_cp))
-        // {
-        //     socklen_t len = sizeof(server->client);
-        //     int new_cli = accept(server->socket, (const struct sockaddr*)&server->client, &len);
-        //     if (new_cli < 0)
-        //         perror("connection refused");
-        //     FD_SET(new_cli, &rset);
-        //     max = (new_cli > max) ? new_cli : max;
-        // }
-
         for(int fd = 0; fd <= max; fd++)
         {
-            //new connection or client handling
-            if(FD_ISSET(fd, &rset_cp))
+            if (FD_ISSET(fd, &rset_cp))
             {
                 if (fd == server->socket)
                 {
-                    //new client received
+                    //new connection
+                    socklen_t len = sizoef(server->client);
+                    int cli = accept(server->socket, (const struct sockaddr*)&server->client, &len);
+                    if (cli < 0) continue;
+                    FD_SET(cli, &set.rset);
+                    set.clients[server->id++];
                 }
-                else if (fd != server->socket)
+                else
                 {
-                    
-
                     //client handling
-                    
+
                 }
             }
         }
+
     }
 }
+
+
+
+
+/*
+
+    {size:11,data: hello world}
+
+
+
+*/
