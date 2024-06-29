@@ -4,5 +4,6 @@
 
 service_t *create_client(int family, uint16_t port, char* ipv);
 int send_packet(service_t *cli, bomb_t *bomb, char * method);
+int recv_packet(service_t *cli, bomb_t *bomb);
 
 #endif

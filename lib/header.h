@@ -17,6 +17,8 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <string.h>
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h>
 #include "libft.h"
 // #include <mlx.h>
 // #include <cjson/cJSON.h>
@@ -34,6 +36,7 @@ typedef struct service_t
     };
     int listen;
     char request[4096];
+    char response[4096];
     struct sockaddr_in server;
     struct sockaddr_in client;
     struct sockaddr old_type_address;

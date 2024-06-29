@@ -1,8 +1,8 @@
 CLI_NAME = cli
 SRV_NAME = srv
 
-CC = gcc
-CFLAGS = -std=c99 -Ilib  -Ilibft  #-framework OpenGL #-g -fsanitize=address -Wall -Wextra -Werror
+GCC = gcc
+CFLAGS = -Ilib  -Ilibft  -framework OpenGL -framework GLUT -Qunused-arguments -Wno-deprecated-declarations #-g -fsanitize=address -Wall -Wextra -Werror
 
 CLI_SRC = $(wildcard src/client/*.c)
 SRV_SRC = $(wildcard src/server/*.c)
@@ -17,13 +17,13 @@ libft_build :
 	$(MAKE) -C libft
 
 $(CLI_NAME): $(CLI_OBJ)
-	$(CC) $(CLI_OBJ) $(CFLAGS) $(LDFLAGS) -o $(CLI_NAME) -lm libft/libft.a -lreadline
+	$(GCC) $(CLI_OBJ) $(CFLAGS) $(LDFLAGS) -o $(CLI_NAME) -lm libft/libft.a -lreadline
 
 $(SRV_NAME): $(SRV_OBJ)
-	$(CC) $(SRV_OBJ) $(CFLAGS) -o $(SRV_NAME) -lm libft/libft.a -lreadline
+	$(GCC) $(SRV_OBJ) $(CFLAGS) -o $(SRV_NAME) -lm libft/libft.a -lreadline
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(GCC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -rf $(CLI_OBJ) $(SRV_OBJ)

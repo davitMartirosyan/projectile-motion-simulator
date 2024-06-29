@@ -19,6 +19,12 @@ typedef struct headers_t
 
 }headers_t;
 
+typedef struct set
+{
+    fd_set rset;
+    fd_set wset;
+}set;
+
 headers_t *get_headers(char *r);
 service_t *create_server(int family, uint16_t port, uint32_t ipv);
 headers_t *get_headers(char *r);

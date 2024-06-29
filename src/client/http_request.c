@@ -21,11 +21,15 @@ int send_packet(service_t *cli, bomb_t *bomb, char * method)
         sprintf(path, "/phys?angle=%.3f&velocity=%.3f", bomb->angle, bomb->velocity);
     else
         return (0);
-    // printf(request, method, !*path ? "/phys" : path, cli->ipv);
     sprintf(cli->request, request, method, !*path ? "/phys" : path, cli->ipv);
-    ssize_t a = send(cli->socket, cli->request, ft_strlen(cli->request), 0);
-    
-    printf("%zu\n", a);
+    ssize_t sd = send(cli->socket, cli->request, ft_strlen(cli->request), 0);
+    printf("%s", cli->request);
+    // close(cli->socket);
     return (1);
 }
 
+int recv_packet(service_t *cli, bomb_t *bomb)
+{
+    ssize_t rp = recv(cli->socket, cli->response, sizeof(cli->response), 0);
+    return (0);
+}

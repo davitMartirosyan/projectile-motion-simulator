@@ -120,3 +120,52 @@ for(int i = 0; i < interval; i++)
 		printf("{x: %f, y: %f} - [%f]\n", get_xt(vx, T_time(i, 0.1)), get_yt(vy, T_time(i, 0.1), 9.81), get_vyt(vy, 9.81, T_time(i, 0.1)));
 		nanosleep(&t, NULL);
 }
+
+
+
+
+while (1)
+{
+		socklen_t len = sizeof(server->client);
+		int client = accept(server->socket, (struct sockaddr*)&server->client, &len);
+		
+		int rt = recv(client, server->request, sizeof(server->request) - 1, 0);
+		server->request[rt] = '\0';
+		if (rt > 0)
+		{
+				printf("%s\n", server->request);
+				memset(server->response, 0, sizeof(server->response));
+				ssize_t sd = send(client, server->response, sizeof(server->response), 0);
+		}
+		else
+				close(client);
+		memset(server->request, 0, sizeof(server->request));
+}
+
+
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    // OpenGL drawing commands here
+    
+    glutSwapBuffers();
+}
+
+int main(int argc, char** argv) {
+    // Initialize GLUT
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("OpenGL Program");
+
+    // Register callback functions
+    glutDisplayFunc(display);
+
+    // Set background color
+    glClearColor(0Xff, 0.0, 0.0, 1.0);
+
+    // Enter the GLUT event processing loop
+    glutMainLoop();
+    return 0;
+}
