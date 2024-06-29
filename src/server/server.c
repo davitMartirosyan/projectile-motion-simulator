@@ -41,20 +41,54 @@ int main(int ac, char **av)
                 if (fd == server->socket)
                 {
                     //new connection
-                    socklen_t len = sizoef(server->client);
+                    // printf("neww\n");
+                    socklen_t len = sizeof(server->client);
                     int cli = accept(server->socket, (const struct sockaddr*)&server->client, &len);
+                    // printf("accept\n");
                     if (cli < 0) continue;
+                    set.clients[cli].fd = cli;
+                    max = (cli > max) ? cli : max;
                     FD_SET(cli, &set.rset);
-                    set.clients[server->id++];
                 }
                 else
                 {
                     //client handling
+                    // ssize_t rd = recv(fd, set.clients[fd].response, sizeof(set.clients[fd].response), 0);
+                    // set.clients[fd].request[rd] = '\0';
+                    // printf("%s", set.clients[fd].response);
+                    // memset(set.clients[fd].request, 0, sizeof(set.clients[fd].request));
 
+                    char buf[4096] = {0};
+                    ssize_t rd = recv(fd, buf, sizeof(buf), 0);
+                    buf[rd] = '\0';
+                    char html[4096] = 
+                        "HTTP/1.1 200 OK\r\n"
+                        "Content-Type: text/html\r\n"
+                        "\r\n"
+                        "<html>"
+                        "<body"
+                        "<h1>"
+                        "hello world"
+                        "</h1>"
+                        "</body>"
+                        "</html>";
+                    int a = send(fd, html, ft_strlen(html), 0);
+                    printf("send: %d\n", a);
+                    close(fd);
+                    FD_CLR(fd, &rset_cp);
+                    FD_CLR(fd, &set.rset);
                 }
             }
         }
 
+        // for(int fd = 2; fd <= max; fd++)
+        // {
+        //     if(FD_ISSET(fd, &wset_cp))
+        //     {
+        //         char buf[1024] = {0};
+        //         ssize_t sd = send(fd, buf, sizeof(buf), 0);
+        //     }
+        // }
     }
 }
 

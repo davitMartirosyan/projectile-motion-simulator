@@ -31,5 +31,7 @@ int send_packet(service_t *cli, bomb_t *bomb, char * method)
 int recv_packet(service_t *cli, bomb_t *bomb)
 {
     ssize_t rp = recv(cli->socket, cli->response, sizeof(cli->response), 0);
+    close(cli->socket);
+    printf("hasa\n");
     return (0);
 }

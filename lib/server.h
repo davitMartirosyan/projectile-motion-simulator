@@ -11,6 +11,14 @@ typedef struct headers_t
     char *version;
 }headers_t;
 
+typedef struct client_t
+{
+    int fd;
+    headers_t *headers;
+    char response[4096];
+    char request[4096];
+}client_t;
+
 typedef struct set_t
 {
     client_t clients[10];
@@ -18,11 +26,6 @@ typedef struct set_t
     fd_set wset;
 }set_t;
 
-typedef struct client_t
-{
-    headers_t *headers;
-    char response[4096];
-}client_t;
 
 
 headers_t *get_headers(char *r);
