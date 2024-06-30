@@ -4,17 +4,7 @@
 
 int main(int ac, char **av)
 {
-    if (ac < 2)
-    {
-        printf("Usage: -g Acceleration due to gravity\n");
-        exit(1);
-    }
-    if (strcmp(av[1], "-g") != 0)
-    {
-        printf("Usage: -g Acceleration due to gravity\n");
-        exit(1);
-    }
-    service_t *server = create_server(AF_INET, 2020, INADDR_ANY);
+    service_t *server = create_server(AF_INET, (uint16_t)ft_atoi(av[1]), av[2]);
     set_t set = {0};
     bomb_t bomb = {0};
 
@@ -63,6 +53,7 @@ int main(int ac, char **av)
                 buf[r] = '\0';
                 printf("{{{{%d}}}}\n", fd);
                 // <=>
+
                 headers_t *req = get_headers(buf);
                 if (req)
                 {

@@ -30,7 +30,7 @@ typedef struct set_t
 
 
 headers_t   *get_headers(char *r);
-service_t   *create_server(int family, uint16_t port, uint32_t ipv);
+service_t   *create_server(int family, uint16_t port, char *ipv);
 headers_t   *get_headers(char *r);
 int         parseHTTPRequest(char *req);
 void        non_block(int socket);

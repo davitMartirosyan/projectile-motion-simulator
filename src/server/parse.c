@@ -11,6 +11,8 @@ headers_t *get_headers(char *r)
     rq->headers = ft_split_sized(r, '\n', &rq->size);
     if (rq->headers)
         rq->reqline = ft_split_sized(rq->headers[0], ' ', &rq->reqline_size);
+    else
+        return (NULL);
     return (rq);
 }
 
