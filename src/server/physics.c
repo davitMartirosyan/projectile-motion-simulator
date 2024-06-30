@@ -55,3 +55,33 @@ double get_vyt(double v0y, double g, double t)
 {
     return (v0y - (g * t));
 }
+
+void calculate(int cli, bomb_t *bomb, double g)
+{
+	double vx = calc_vx(bomb->velocity, bomb->angle);
+	double vy = calc_vy(bomb->velocity, bomb->angle);
+	double total_time = T_flight(vy, g);
+	double peak = T_peak(total_time);
+	int interval = N_interval(total_time, 0.1);
+    vec xy_pos_array[interval];
+    memset(xy_pos_array, 0, sizeof(vec));
+	struct timespec t;
+	t.tv_sec = 0;
+	t.tv_nsec = (1 % 10000) * 100000000;
+
+    printf("%d\n", interval);
+    ssize_t s_interval = send(cli, &interval, sizeof(int), 0);
+	for(int i = 0; i <= interval; i++)
+	{
+			printf("{x: %f, y: %f} - [%f]\n",
+            get_xt(vx, T_time(i, 0.1)),
+            get_yt(vy, T_time(i, 0.1), g),
+            get_vyt(vy, g, T_time(i, 0.1))
+							);
+            // xy_pos_array[i].x =  get_xt(vx, T_time(i, 0.1));
+            // xy_pos_array[i].y =  get_yt(vy, T_time(i, 0.1), 9.81);
+            // xy_pos_array[i].vy = get_vyt(vy, 9.81, T_time(i, 0.1));
+			nanosleep(&t, NULL);
+	}
+
+}

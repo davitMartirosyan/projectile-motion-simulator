@@ -15,8 +15,7 @@ void non_block(int socket)
     }
 }
 
-service_t *
-create_server(int family, uint16_t port, uint32_t ipv)
+service_t *create_server(int family, uint16_t port, uint32_t ipv)
 {
     service_t *service;
 

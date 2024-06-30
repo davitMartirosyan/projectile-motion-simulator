@@ -29,8 +29,10 @@ typedef struct set_t
 }set_t;
 
 
-headers_t *get_headers(char *r);
-service_t *create_server(int family, uint16_t port, uint32_t ipv);
-headers_t *get_headers(char *r);
-void non_block(int socket);
+headers_t   *get_headers(char *r);
+service_t   *create_server(int family, uint16_t port, uint32_t ipv);
+headers_t   *get_headers(char *r);
+int         parseHTTPRequest(char *req);
+void        non_block(int socket);
+void        calculate(int cli, bomb_t *bomb, double g);
 #endif

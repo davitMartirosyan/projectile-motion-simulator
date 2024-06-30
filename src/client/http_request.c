@@ -3,7 +3,7 @@
 
 int send_packet(service_t *cli, bomb_t *bomb, char * method)
 {
-    printf("%s\n", cli->ipv);
+    // printf("%s\n", cli->ipv);
     char path[1024] = {0};
     char url_encode[1024] = {0};
 
@@ -23,22 +23,31 @@ int send_packet(service_t *cli, bomb_t *bomb, char * method)
         return (0);
     sprintf(cli->request, request, method, !*path ? "/phys" : path, cli->ipv);
     ssize_t sd = send(cli->socket, cli->request, ft_strlen(cli->request), 0);
-    printf("send: %ld\n", sd);
     if (sd < 0)
     {
         perror("send");
         return (0);
     }
-    // printf("%s", cli->request);
     return (1);
 }
 
 int recv_packet(service_t *cli, bomb_t *bomb) {
+    // int intervals = 0;
+    // ssize_t rp = recv(cli->socket, &intervals, sizeof(int), 0);
+    // if (rp < 0)
+    // {
+    //     perror("recv");
+    //     return (0);
+    // }
+    // printf("N -> [%d]\n", intervals);
+    // vec xyt[intervals];
+
+    // memset(xyt, 0, sizeof(vec) * intervals);
     ssize_t rp = recv(cli->socket, cli->response, sizeof(cli->response), 0);
-    printf("recv: %ld\n", rp);
     if (rp < 0) {
         perror("recv");
         return 0;
     }
+    // printf("%f : %f : [%f]\n", xyt[0].x, xyt[0].y, xyt[0].vy);
     return 1;
 }

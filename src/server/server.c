@@ -16,6 +16,8 @@ int main(int ac, char **av)
     }
     service_t *server = create_server(AF_INET, 2020, INADDR_ANY);
     set_t set = {0};
+    bomb_t bomb = {0};
+
     if (!server)
         exit(1);
 
@@ -60,40 +62,30 @@ int main(int ac, char **av)
                 }
                 buf[r] = '\0';
                 printf("{{{{%d}}}}\n", fd);
-                headers_t *headers = get_headers(buf);
-                printf("_____________\n");
-                printf("%s\n", headers->headers[headers->size - 1]);
-                int size = 0;
-                char **json = ft_split_sized(headers->headers[headers->size - 1], ':', &size);
-                printf("%f\n", strtod(json[1], NULL));
-                printf("%f\n", strtod(json[3], NULL));
-
-
-
-
-                double vx = calc_vx(strtod(json[3], NULL), strtod(json[1], NULL));
-                double vy = calc_vy(strtod(json[3], NULL), strtod(json[1], NULL));
-                double total_time = T_flight(vy, 9.81);
-                double peak = T_peak(total_time);
-                double interval = N_interval(total_time, 0.1);
-
-                struct timespec t;
-                t.tv_sec = 0;
-                t.tv_nsec = (1 % 10000) * 100000000;
-
-                for(int i = 0; i <= interval; i++)
+                // <=>
+                headers_t *req = get_headers(buf);
+                if (req)
                 {
-                    printf("{x: %f, y: %f} - [%f]\n", get_xt(vx, T_time(i, 0.1)), 
-                                                      get_yt(vy, T_time(i, 0.1), 9.81), 
-                                                      get_vyt(vy, 9.81, T_time(i, 0.1))
-                            );
-                    nanosleep(&t, NULL);
+                    if (strcmp(req->reqline[0], "GET") == 0)
+                    {
+                        printf("GET: %s\n", req->reqline[1]);
+                    }
+                    else if (strcmp(req->reqline[0], "POST") == 0)
+                    {
+                        int size = 0;
+                        char **body = ft_split_sized(req->headers[req->size - 1], ':', &size);
+                        if (body)
+                        {
+                            bomb.angle = strtod(body[1], NULL);
+                            bomb.velocity = strtod(body[3], NULL);
+                            printf("%f : %f\n", bomb.angle, bomb.velocity);
+                            for(int i = 0; i < size; i++)
+                                free(body[i]);
+                            free(body);
+                        }
+                    }
+                    calculate(fd, &bomb, 9.81);
                 }
-
-
-                printf("_____________\n");
-
-                printf("%s", buf);
                 ssize_t s = send(fd, buf, ft_strlen(buf), 0);
                 if (s <= 0)
                 {

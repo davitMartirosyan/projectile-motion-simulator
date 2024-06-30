@@ -53,4 +53,14 @@ typedef struct bomb_t
     double angle;
 } bomb_t;
 
+typedef struct vec
+{
+    double x;
+    double y;
+    double vy;
+    double vx;
+    double flight_time;
+    double peak_time;
+} vec;
+
 #endif
