@@ -24,9 +24,11 @@ int	main(int ac, char **av)
         bomb.angle = strtod(angle, NULL);
         bomb.velocity = strtod(velocity, NULL);
         if (bomb.angle != 0 && bomb.velocity != 0)
+		{
             if(send_packet(client, &bomb, method))
                 recv_packet(client, &bomb);
-        else
+        }
+		else
             printf("Enter Correct Values\n");
         free(angle);
         free(velocity);

@@ -13,7 +13,7 @@ int send_packet(service_t *cli, bomb_t *bomb, char * method)
     request = ft_strjoin(request, "\r\n");
     if (strcmp(method, "POST") == 0)
     {
-        sprintf(url_encode, "{angle:%.3f,velocity:%.3f}", bomb->angle, bomb->velocity);
+        sprintf(url_encode, "angle:%.3f:velocity:%.3f", bomb->angle, bomb->velocity);
         request = ft_strjoin(request, url_encode);
         request = ft_strjoin(request, "\n");
     }

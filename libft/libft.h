@@ -52,6 +52,7 @@ char	*ft_strchr(const char *buffer, int ch);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
+char	**ft_split_sized(char const *s, char c, int *size);
 
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_atoi(const char *nptr);

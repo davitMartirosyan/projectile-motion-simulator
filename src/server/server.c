@@ -56,9 +56,43 @@ int main(int ac, char **av)
                 {
                     close(fd);
                     FD_CLR(fd, &set.rset);
+                    continue;
                 }
                 buf[r] = '\0';
                 printf("{{{{%d}}}}\n", fd);
+                headers_t *headers = get_headers(buf);
+                printf("_____________\n");
+                printf("%s\n", headers->headers[headers->size - 1]);
+                int size = 0;
+                char **json = ft_split_sized(headers->headers[headers->size - 1], ':', &size);
+                printf("%f\n", strtod(json[1], NULL));
+                printf("%f\n", strtod(json[3], NULL));
+
+
+
+
+                double vx = calc_vx(strtod(json[3], NULL), strtod(json[1], NULL));
+                double vy = calc_vy(strtod(json[3], NULL), strtod(json[1], NULL));
+                double total_time = T_flight(vy, 9.81);
+                double peak = T_peak(total_time);
+                double interval = N_interval(total_time, 0.1);
+
+                struct timespec t;
+                t.tv_sec = 0;
+                t.tv_nsec = (1 % 10000) * 100000000;
+
+                for(int i = 0; i <= interval; i++)
+                {
+                    printf("{x: %f, y: %f} - [%f]\n", get_xt(vx, T_time(i, 0.1)), 
+                                                      get_yt(vy, T_time(i, 0.1), 9.81), 
+                                                      get_vyt(vy, 9.81, T_time(i, 0.1))
+                            );
+                    nanosleep(&t, NULL);
+                }
+
+
+                printf("_____________\n");
+
                 printf("%s", buf);
                 ssize_t s = send(fd, buf, ft_strlen(buf), 0);
                 if (s <= 0)

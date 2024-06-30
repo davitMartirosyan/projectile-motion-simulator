@@ -8,8 +8,8 @@ headers_t *get_headers(char *r)
     if (!rq)
         return (NULL);
     memset(rq, 0, sizeof(headers_t));
-    rq->headers = ft_split(r, '\n');
-    rq->reqline = ft_split(rq->headers[0], ' ');
+    rq->headers = ft_split_sized(r, '\n', &rq->size);
+    rq->reqline = ft_split_sized(rq->headers[0], ' ', &rq->reqline_size);
     rq->method = rq->reqline[0];
     rq->path = rq->reqline[1];
     return (rq);

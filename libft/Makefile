@@ -36,6 +36,7 @@ SRCS = ft_memset.c		\
 		ft_strnstr.c	\
 		ft_striteri.c	\
 		ft_atoi.c		\
+		ft_atof.c		\
 		ft_calloc.c		\
 		ft_strdup.c		\
 		ft_substr.c		\
@@ -50,6 +51,7 @@ SRCS = ft_memset.c		\
 		ft_putnbr_fd.c \
 		ft_append.c	\
 		get_next_line.c \
+		ft_split_sized.c \
 
 SRCSB =	ft_lstnew.c			\
 		ft_lstadd_front.c	\

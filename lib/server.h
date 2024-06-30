@@ -9,6 +9,8 @@ typedef struct headers_t
     char *method;
     char *path;
     char *version;
+    int size;
+    int reqline_size;
 }headers_t;
 
 typedef struct client_t
@@ -25,7 +27,6 @@ typedef struct set_t
     fd_set rset;
     fd_set wset;
 }set_t;
-
 
 
 headers_t *get_headers(char *r);
