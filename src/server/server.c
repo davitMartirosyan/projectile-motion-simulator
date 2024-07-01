@@ -52,11 +52,13 @@ int main(int ac, char **av)
                 }
                 buf[r] = '\0';
                 printf("{{{{%d}}}}\n", fd);
+                printf("%s\n", buf);
                 // <=>
 
                 headers_t *req = get_headers(buf);
                 if (req)
                 {
+
                     if (strcmp(req->reqline[0], "GET") == 0)
                     {
                         printf("GET: %s\n", req->reqline[1]);
@@ -77,12 +79,14 @@ int main(int ac, char **av)
                     }
                     calculate(fd, &bomb, 9.81);
                 }
-                ssize_t s = send(fd, buf, ft_strlen(buf), 0);
-                if (s <= 0)
-                {
-                    close(fd);
-                    FD_CLR(fd, &set.rset);
-                }
+                // ssize_t s = send(fd, buf, ft_strlen(buf), 0);
+                // if (s <= 0)
+                // {
+                //     close(fd);
+                //     FD_CLR(fd, &set.rset);
+                // }
+                close(fd);
+                FD_CLR(fd, &set.rset);
             }
         }
     }   

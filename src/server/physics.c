@@ -63,25 +63,35 @@ void calculate(int cli, bomb_t *bomb, double g)
 	double total_time = T_flight(vy, g);
 	double peak = T_peak(total_time);
 	int interval = N_interval(total_time, 0.1);
-    vec xy_pos_array[interval];
-    memset(xy_pos_array, 0, sizeof(vec));
+
 	struct timespec t;
 	t.tv_sec = 0;
 	t.tv_nsec = (1 % 10000) * 100000000;
 
-    printf("%d\n", interval);
-    ssize_t s_interval = send(cli, &interval, sizeof(int), 0);
+    char buf[4096];
+    memset(buf, 0, sizeof(buf));
+    char *json = NULL;
+    json = ft_strjoin(json, "HTTP/1.1 200 OK\r\n");
+    json = ft_strjoin(json, "Content-Type: text/plain\r\n");
+    // json = ft_strjoin(json, "Content-Length: 11\r\n");
+    json = ft_strjoin(json, "\r\n");
+    json = ft_strjoin(json, "{");
 	for(int i = 0; i <= interval; i++)
 	{
-			printf("{x: %f, y: %f} - [%f]\n",
-            get_xt(vx, T_time(i, 0.1)),
-            get_yt(vy, T_time(i, 0.1), g),
-            get_vyt(vy, g, T_time(i, 0.1))
-							);
-            // xy_pos_array[i].x =  get_xt(vx, T_time(i, 0.1));
-            // xy_pos_array[i].y =  get_yt(vy, T_time(i, 0.1), 9.81);
-            // xy_pos_array[i].vy = get_vyt(vy, 9.81, T_time(i, 0.1));
-			nanosleep(&t, NULL);
-	}
+			// printf("{x: %f, y: %f} - [%f]\n",
+            // get_xt(vx, T_time(i, 0.1)),
+            // get_yt(vy, T_time(i, 0.1), g),
+            // get_vyt(vy, g, T_time(i, 0.1))
+			// 				);
 
+            sprintf(buf, "{\"x\":%f,\"y\":%f,\"dt\":%f}",    get_xt(vx, T_time(i, 0.1)),
+                                                get_yt(vy, T_time(i, 0.1), g),
+                                                get_vyt(vy, g, T_time(i, 0.1)));
+            json = ft_strjoin(json, buf);
+			// nanosleep(&t, NULL);
+	}
+    json = ft_strjoin(json, "}");
+    json = ft_strjoin(json, "\r\n");
+    ssize_t sd = send(cli, json, ft_strlen(json), 0);
+    free(json);
 }

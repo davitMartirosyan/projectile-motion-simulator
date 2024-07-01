@@ -20,17 +20,22 @@
 
         const form = event.target;
         const velo = document.querySelector('input[name="velo"]').value;
-        const angle = document.querySelector('input[name="angle"]').value;
-        // const formData = new FormData(form);
-        const uri = `http://127.0.0.1:2020/?velo=${encodeURIComponent(velo)}&angle=${encodeURIComponent(angle)}`
+        const ang = document.querySelector('input[name="angle"]').value;
+        const formData = new FormData(form);
+        // const uri = `http://127.0.0.1:2020/?velo=${encodeURIComponent(velo)}&angle=${encodeURIComponent(angle)}`
 
+        const baleball = {angle: parseInt(ang), velocity: parseInt(velo)}
+        const stringify = JSON.stringify(baleball);
+        const formated = stringify.replace(/"(\w+)":/g, '$1:');
+        console.log(formated);
         fetch('http://127.0.0.1:2020/', {
-            method: 'GET',
-            // body: formData
+            method: 'POST',
+            body: "angle:"+ang+":"+"velocity:"+velo,
+            mode: "no-cors"
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Success:', data);
+            console.log('Success:', JSON.parse(data));
         })
         .catch(error => {
             console.error('Error:', error);
