@@ -6,7 +6,7 @@
 /*   By: dmartiro <dmartiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 18:22:35 by dmartiro          #+#    #+#             */
-/*   Updated: 2024/03/22 20:37:41 by dmartiro         ###   ########.fr       */
+/*   Updated: 2024/07/06 03:03:50 by dmartiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ char	**ft_split_sized(char const *s, char c, int *size);
 
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_atoi(const char *nptr);
+int		ft_only_int(char *s);
 int		ft_isalnum(int an);
 int		ft_isalpha(int c);
 int		ft_iswordpart(int ch);

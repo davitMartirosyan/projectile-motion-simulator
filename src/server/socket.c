@@ -32,7 +32,7 @@ service_t   *create_server(int family, uint16_t port, char *ipv)
     }
     if (inet_pton(AF_INET, ipv, (struct in_addr*)&service->ip) != 1)
     {
-        perror("Ip");
+        fprintf(stderr, "Ip: Invalid Ip address\n");
         free(service);
         return (NULL);
     }
@@ -43,9 +43,9 @@ service_t   *create_server(int family, uint16_t port, char *ipv)
     setsockopt(service->socket, SOL_SOCKET, SO_REUSEADDR, &service->opt, sizeof(service->opt));
     service->bind = bind(service->socket, (const struct sockaddr*)&service->server, sizeof(service->server));
     non_block(service->socket);
-    if (service->bind < 0)
+    if (service->bind < 0 || port == 0)
     {
-        perror("Bind");
+        fprintf(stderr, "Bind: Invalid Port number || Ip address\n");
         free(service);
         return (NULL);
     }

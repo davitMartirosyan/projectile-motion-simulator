@@ -18,8 +18,12 @@ int send_packet(service_t *cli, bomb_t *bomb, char * method)
     else if (strcmp(method, "GET") == 0)
         sprintf(path, "/phys?angle=%.3f&velocity=%.3f", bomb->angle, bomb->velocity);
     else
+    {
+        free(request);
         return (0);
+    }
     sprintf(cli->request, request, method, !*path ? "/phys" : path, cli->ipv);
+    free(request);
     ssize_t sd = send(cli->socket, cli->request, ft_strlen(cli->request), 0);
     if (sd < 0)
     {
@@ -32,17 +36,17 @@ int send_packet(service_t *cli, bomb_t *bomb, char * method)
 int recv_packet(int *ac, char **av, service_t *cli, bomb_t *bomb) {
     int intervals = 0;
     ssize_t receive_interval = recv(cli->socket, &intervals, sizeof(int), 0);
-    if (receive_interval < 0)
+    if (receive_interval <= 0)
     {
-        perror("recv");
+        perror("recv1");
         return (0);
     }
     printf("N -> [%d]\n", intervals);
     vec xyt[intervals + 1];
     ssize_t receive_data = recv(cli->socket, xyt, (sizeof(vec) * (intervals+1)), 0);
-    if (receive_data < 0) {
-        perror("recv");
-        return 0;
+    if (receive_data <= 0) {
+        perror("recv2");
+        return (0);
     }
     struct timespec t;
 	t.tv_sec = 0;

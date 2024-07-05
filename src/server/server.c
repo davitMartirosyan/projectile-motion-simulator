@@ -9,6 +9,11 @@ int main(int ac, char **av)
         printf("Usage: <Port> <Ip>\n");
         exit (EXIT_FAILURE);
     }
+    if (!ft_only_int(av[1]))
+    {
+        fprintf(stderr, "Port: Must be only and integer\n");
+        exit(EXIT_FAILURE);
+    }
     service_t *server = create_server(AF_INET, (uint16_t)ft_atoi(av[1]), av[2]);
     set_t set = {0};
     bomb_t bomb = {0};

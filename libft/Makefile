@@ -6,7 +6,7 @@
 #    By: dmartiro <dmartiro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 20:17:29 by dmartiro          #+#    #+#              #
-#    Updated: 2024/05/10 01:07:32 by dmartiro         ###   ########.fr        #
+#    Updated: 2024/07/06 03:03:23 by dmartiro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ SRCS = ft_memset.c		\
 		ft_append.c	\
 		get_next_line.c \
 		ft_split_sized.c \
+		ft_only_int.c	\
 
 SRCSB =	ft_lstnew.c			\
 		ft_lstadd_front.c	\

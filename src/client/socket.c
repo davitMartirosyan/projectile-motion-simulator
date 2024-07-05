@@ -7,16 +7,16 @@ service_t *create_client(uint16_t port, char* ipv)
     if (!service)
         return (NULL);
     memset(service, 0, sizeof(service_t));
-    if (inet_pton(AF_INET, ipv, (struct in_addr*)&service->ip) != 1)
-    {
-        perror("Ip");
-        free(service);
-        return (NULL);
-    }
     service->socket = socket(AF_INET, SOCK_STREAM, 0);
     if (service->socket < 0)
     {
         perror("Socket");
+        free(service);
+        return (NULL);
+    }
+    if (inet_pton(AF_INET, ipv, (struct in_addr*)&service->ip) != 1)
+    {
+        fprintf(stderr, "Ip: Invalid Ip address\n");
         free(service);
         return (NULL);
     }

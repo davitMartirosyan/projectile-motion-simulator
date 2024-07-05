@@ -23,7 +23,6 @@ typedef struct client_t
 
 typedef struct set_t
 {
-    client_t clients[10];
     fd_set rset;
     fd_set wset;
 }set_t;
