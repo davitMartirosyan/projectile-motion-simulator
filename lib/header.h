@@ -19,8 +19,8 @@
 #include <string.h>
 // #include <OpenGL/gl.h>
 // #include <GLUT/glut.h>
-//#include <GL/gl.h>
-//#include <GL/glut.h>
+// #include <GL/gl.h>
+// #include <GL/glut.h>
 #include "libft.h"
 // #include <mlx.h>
 // #include <cjson/cJSON.h>
@@ -59,8 +59,6 @@ typedef struct vec
     double y;
     double vy;
     double vx;
-    double flight_time;
-    double peak_time;
 } vec;
 
 #endif

@@ -2,7 +2,7 @@ CLI_NAME = cli
 SRV_NAME = srv
 
 GCC = cc
-CFLAGS = -Ilib  -Ilibft   -g -fsanitize=address #-Wall -Wextra -Werror #-framework OpenGL -framework GLUT -Qunused-arguments  -Wl -w -Wno-deprecated-declarations
+CFLAGS = -Ilib  -Ilibft   -g -fsanitize=address #-framework OpenGL -framework GLUT -Qunused-arguments  -Wl -w -Wno-deprecated-declarations #-Wall -Wextra -Werror
 
 CLI_SRC = $(wildcard src/client/*.c)
 SRV_SRC = $(wildcard src/server/*.c)

@@ -205,3 +205,21 @@ int main(int argc, char** argv) {
 							);
 			nanosleep(&t, NULL);
 	}
+
+
+
+char *json = NULL;
+json = ft_strjoin(json, "HTTP/1.1 200 OK\r\n");
+json = ft_strjoin(json, "Content-Type: text/plain\r\n");
+json = ft_strjoin(json, "\r\n");
+json = ft_strjoin(json, "{");
+
+
+// sprintf(buf, "{\"x\":%f,\"y\":%f,\"dt\":%f}",    get_xt(vx, T_time(i, 0.1)),
+//                                     get_yt(vy, T_time(i, 0.1), g),
+//                                     get_vyt(vy, g, T_time(i, 0.1)));
+// json = ft_strjoin(json, buf);
+
+
+// json = ft_strjoin(json, "}");
+    // json = ft_strjoin(json, "\r\n");

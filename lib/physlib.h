@@ -7,6 +7,7 @@ double  calc_vy(double v0, double angle);
 double  get_xt(double v0x, double t);
 double  get_yt(double v0y, double t, double g);
 double  get_vyt(double v0y, double g, double t);
+double  get_vxt(double v0, double angle);
 double  T_flight(double v0y, double g);
 double  T_peak(double total_time);
 double  H_max(double v0y, double g);

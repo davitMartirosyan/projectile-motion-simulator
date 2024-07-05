@@ -56,6 +56,11 @@ double get_vyt(double v0y, double g, double t)
     return (v0y - (g * t));
 }
 
+double get_vxt(double v0, double angle)
+{
+    return (v0 * cos((angle * M_PI) / 180));
+}
+
 void calculate(int cli, bomb_t *bomb, double g)
 {
 	double vx = calc_vx(bomb->velocity, bomb->angle);
@@ -64,34 +69,34 @@ void calculate(int cli, bomb_t *bomb, double g)
 	double peak = T_peak(total_time);
 	int interval = N_interval(total_time, 0.1);
 
+    //send interval
+    ssize_t send_interval = send(cli, &interval, sizeof(int), 0);
+    if (send_interval <= 0)
+        return;
+    //send interval
 	struct timespec t;
 	t.tv_sec = 0;
 	t.tv_nsec = (1 % 10000) * 100000000;
 
-    char buf[4096];
-    memset(buf, 0, sizeof(buf));
-    char *json = NULL;
-    json = ft_strjoin(json, "HTTP/1.1 200 OK\r\n");
-    json = ft_strjoin(json, "Content-Type: text/plain\r\n");
-    // json = ft_strjoin(json, "Content-Length: 11\r\n");
-    json = ft_strjoin(json, "\r\n");
-    json = ft_strjoin(json, "{");
+    vec xyt[interval + 1];
 	for(int i = 0; i <= interval; i++)
 	{
-			// printf("{x: %f, y: %f} - [%f]\n",
-            // get_xt(vx, T_time(i, 0.1)),
-            // get_yt(vy, T_time(i, 0.1), g),
-            // get_vyt(vy, g, T_time(i, 0.1))
-			// 				);
-
-            sprintf(buf, "{\"x\":%f,\"y\":%f,\"dt\":%f}",    get_xt(vx, T_time(i, 0.1)),
-                                                get_yt(vy, T_time(i, 0.1), g),
-                                                get_vyt(vy, g, T_time(i, 0.1)));
-            json = ft_strjoin(json, buf);
+			printf("{x: %f, y: %f} - [%f] : %d\n",
+            get_xt(vx, T_time(i, 0.1)),
+            get_yt(vy, T_time(i, 0.1), g),
+            get_vyt(vy, g, T_time(i, 0.1)),
+							i);
+            xyt[i].x = get_xt(vx, T_time(i, 0.1));
+            xyt[i].y = get_yt(vy, T_time(i, 0.1), g);
+            xyt[i].vx = get_vxt(vx, T_time(i, 0.1));
+            xyt[i].vy = get_vyt(vy, g, T_time(i, 0.1));
 			// nanosleep(&t, NULL);
 	}
-    json = ft_strjoin(json, "}");
-    json = ft_strjoin(json, "\r\n");
-    ssize_t sd = send(cli, json, ft_strlen(json), 0);
-    free(json);
+    ssize_t sd = send(cli, xyt, (sizeof(vec) * (interval+1)), 0);
+    if (sd <= 0)
+    {
+        perror("Send");
+        return ;
+    }
+
 }

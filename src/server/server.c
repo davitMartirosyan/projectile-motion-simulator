@@ -4,13 +4,17 @@
 
 int main(int ac, char **av)
 {
+    if (ac != 3)
+    {
+        printf("Usage: <Port> <Ip>\n");
+        exit (EXIT_FAILURE);
+    }
     service_t *server = create_server(AF_INET, (uint16_t)ft_atoi(av[1]), av[2]);
     set_t set = {0};
     bomb_t bomb = {0};
 
     if (!server)
         exit(1);
-
     FD_ZERO(&set.rset);
     FD_ZERO(&set.wset);
     FD_SET(server->socket, &set.rset);
@@ -25,7 +29,6 @@ int main(int ac, char **av)
             continue;
         if (FD_ISSET(server->socket, &rset_cp))
         {
-            //new connection
             socklen_t len = sizeof(server->client);
             int cli = accept(server->socket, (struct sockaddr*)&server->client, &len);
             if (cli < 0)
@@ -51,14 +54,9 @@ int main(int ac, char **av)
                     continue;
                 }
                 buf[r] = '\0';
-                printf("{{{{%d}}}}\n", fd);
-                printf("%s\n", buf);
-                // <=>
-
                 headers_t *req = get_headers(buf);
                 if (req)
                 {
-
                     if (strcmp(req->reqline[0], "GET") == 0)
                     {
                         printf("GET: %s\n", req->reqline[1]);
@@ -79,14 +77,6 @@ int main(int ac, char **av)
                     }
                     calculate(fd, &bomb, 9.81);
                 }
-                // ssize_t s = send(fd, buf, ft_strlen(buf), 0);
-                // if (s <= 0)
-                // {
-                //     close(fd);
-                //     FD_CLR(fd, &set.rset);
-                // }
-                close(fd);
-                FD_CLR(fd, &set.rset);
             }
         }
     }   

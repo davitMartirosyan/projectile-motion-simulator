@@ -26,30 +26,33 @@ service_t   *create_server(int family, uint16_t port, char *ipv)
     service->socket = socket(family, SOCK_STREAM, 0);
     if (service->socket < 0)
     {
+        perror("Socket");
         free(service);
         return (NULL);
     }
-    // if (inet_pton(AF_INET, ipv, (struct in_addr*)&service->ip) != 1)
-    // {
-    //     fprintf(stderr, "Invalid Ip address format\n");
-    //     free(service);
-    //     return (NULL);
-    // }
+    if (inet_pton(AF_INET, ipv, (struct in_addr*)&service->ip) != 1)
+    {
+        perror("Ip");
+        free(service);
+        return (NULL);
+    }
     service->opt = 1;
     service->server.sin_family = family;
     service->server.sin_port = htons(2020);
-    service->server.sin_addr.s_addr = INADDR_ANY;
+    service->server.sin_addr.s_addr = service->ip.s_addr;
     setsockopt(service->socket, SOL_SOCKET, SO_REUSEADDR, &service->opt, sizeof(service->opt));
     service->bind = bind(service->socket, (const struct sockaddr*)&service->server, sizeof(service->server));
     non_block(service->socket);
     if (service->bind < 0)
     {
+        perror("Bind");
         free(service);
         return (NULL);
     }
     service->listen = listen(service->socket, 5);
     if (service->listen < 0)
     {
+        perror("Listen");
         free(service);
         return (NULL);
     }

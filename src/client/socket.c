@@ -7,10 +7,9 @@ service_t *create_client(uint16_t port, char* ipv)
     if (!service)
         return (NULL);
     memset(service, 0, sizeof(service_t));
-    // strcpy(service->ipv, ipv);
     if (inet_pton(AF_INET, ipv, (struct in_addr*)&service->ip) != 1)
     {
-        fprintf(stderr, "Invalid Ip address format\n");
+        perror("Ip");
         free(service);
         return (NULL);
     }

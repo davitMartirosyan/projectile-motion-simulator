@@ -15,9 +15,10 @@ int	main(int ac, char **av)
     service_t *client = create_client((uint16_t)ft_atoi(av[1]), av[2]);
     if (!client)
         exit(1);
+    
+
     while (1)
     {
-
         char *method = readline("Method: ");
         char *angle = readline("Angle: ");
         char *velocity = readline("Velocity: ");
@@ -26,7 +27,7 @@ int	main(int ac, char **av)
         if (bomb.angle != 0 && bomb.velocity != 0)
 		{
             if(send_packet(client, &bomb, method))
-                recv_packet(client, &bomb);
+                recv_packet(&ac, av, client, &bomb);
         }
 		else
             printf("Enter Correct Values\n");
